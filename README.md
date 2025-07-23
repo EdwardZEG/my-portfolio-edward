@@ -147,3 +147,30 @@ Las contribuciones son bienvenidas. Si encuentras algún error o tienes sugerenc
 ⭐ **¡Si te gusta este proyecto, no olvides darle una estrella!**
 
 💻 **Desarrollado con ❤️ por Edward**
+
+## 🚀 Despliegue en Vercel
+
+Puedes desplegar este portafolio fácilmente en [Vercel](https://vercel.com/):
+
+1. **Prepara tu repositorio:**
+   - Sube todo el proyecto a GitHub, GitLab o Bitbucket.
+   - Asegúrate de que el archivo `.env` **NO** contenga datos sensibles antes de subirlo. (Vercel permite configurar variables de entorno de forma segura.)
+
+2. **Configura las variables de entorno en Vercel:**
+   - Ve a tu dashboard de Vercel > Project Settings > Environment Variables.
+   - Agrega tus variables como `MONGODB_URI` y `PORT` (usa el mismo nombre que en tu `.env`).
+
+3. **Despliega:**
+   - Conecta tu repositorio a Vercel y haz deploy.
+   - Vercel detectará el archivo `vercel.json` y configurará las rutas automáticamente.
+   - El backend Express funcionará como función serverless y el frontend será estático.
+
+4. **Accede a tu portafolio:**
+   - Una vez desplegado, tu sitio estará disponible en la URL que te da Vercel.
+
+---
+
+## ⚠️ Seguridad: Variables de entorno
+
+- **Nunca subas tu `.env` real con contraseñas o URIs de bases de datos públicas.**
+- Usa el dashboard de Vercel para gestionar variables de entorno de forma segura.
