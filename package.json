@@ -1,0 +1,62 @@
+{
+  "name": "edward-portfolio",
+  "version": "1.0.0",
+  "description": "Portafolio personal de Edward - Ingeniero en Tecnologías de la Información",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=3000 --open=/",
+    "dev": "live-server --port=3000 --open=/ --watch=assets/",
+    "build": "echo 'Build complete - Portfolio ready for deployment'",
+    "test": "echo 'No tests specified yet'",
+    "deploy": "echo 'Ready for deployment to production'",
+    "serve": "python -m http.server 8000",
+    "validate": "html5validator --root . --also-check-css",
+    "optimize": "npm run minify-css && npm run minify-js",
+    "minify-css": "cleancss -o assets/css/style.min.css assets/css/style.css",
+    "minify-js": "terser assets/js/script.js -o assets/js/script.min.js",
+    "generate-images": "node scripts/generate-placeholders.js"
+  },
+  "keywords": [
+    "portfolio",
+    "developer",
+    "web-development",
+    "javascript",
+    "html",
+    "css",
+    "responsive",
+    "edward",
+    "engineer"
+  ],
+  "author": "Edward",
+  "license": "MIT",
+  "devDependencies": {
+    "clean-css-cli": "^5.6.2",
+    "live-server": "^1.2.2",
+    "terser": "^5.19.4"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.4",
+    "nodemailer": "^7.0.5"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/edward/portfolio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/edward/portfolio/issues"
+  },
+  "homepage": "https://edward-portfolio.com"
+}

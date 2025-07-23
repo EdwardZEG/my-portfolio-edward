@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Imágenes Placeholder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .generator {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+        }
+
+        .controls input,
+        .controls select {
+            margin: 5px;
+            padding: 5px;
+        }
+
+        .preview {
+            border: 1px solid #ddd;
+            margin: 10px 0;
+        }
+
+        canvas {
+            border: 1px solid #ccc;
+        }
+
+        .download-btn {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="generator">
+        <h1>Generador de Imágenes Placeholder para Proyectos</h1>
+
+        <div class="controls">
+            <input type="text" id="projectName" placeholder="Nombre del Proyecto" value="Dashboard Responsivo">
+            <select id="technology">
+                <option value="HTML/CSS/JS">HTML/CSS/JS</option>
+                <option value="Node.js">Node.js</option>
+                <option value="Python">Python</option>
+                <option value="React">React</option>
+                <option value="Vue.js">Vue.js</option>
+            </select>
+            <input type="color" id="primaryColor" value="#3B82F6">
+            <input type="color" id="secondaryColor" value="#1E40AF">
+            <button onclick="generateImage()">Generar Imagen</button>
+        </div>
+
+        <div class="preview">
+            <canvas id="canvas" width="600" height="400"></canvas>
+        </div>
+
+        <button class="download-btn" onclick="downloadImage()">Descargar Imagen</button>
+
+        <div style="margin-top: 30px;">
+            <h3>Generar todas las imágenes de proyectos:</h3>
+            <button class="download-btn" onclick="generateAllProjectImages()">Generar Todas</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Toast notification en la parte superior derecha
+        function showToast(message) {
+            // Eliminar cualquier toast anterior
+            const oldToast = document.getElementById('custom-toast');
+            if (oldToast) oldToast.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'custom-toast';
+            toast.textContent = message;
+            toast.style.position = 'fixed';
+            toast.style.top = '32px';
+            toast.style.right = '32px';
+            toast.style.background = '#007bff';
+            toast.style.color = 'white';
+            toast.style.padding = '16px 32px';
+            toast.style.borderRadius = '8px';
+            toast.style.boxShadow = '0 4px 16px rgba(0,0,0,0.15)';
+            toast.style.fontSize = '1rem';
+            toast.style.zIndex = '9999';
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(-30px)';
+            toast.style.transition = 'opacity 0.4s, transform 0.4s';
+
+            document.body.appendChild(toast);
+            // Animar entrada
+            setTimeout(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateY(0)';
+            }, 10);
+            // Animar salida y eliminar
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-30px)';
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
+
+        const projects = [
+            { name: 'Dashboard Responsivo', tech: 'HTML/CSS/JS', primary: '#3B82F6', secondary: '#1E40AF' },
+            { name: 'Sistema de Autenticación', tech: 'Node.js/Express', primary: '#10B981', secondary: '#059669' },
+            { name: 'Juego de Memoria', tech: 'JavaScript', primary: '#F59E0B', secondary: '#D97706' },
+            { name: 'App CRUD Tareas', tech: 'JavaScript/Bootstrap', primary: '#EF4444', secondary: '#DC2626' },
+            { name: 'API REST Completa', tech: 'Node.js/MySQL', primary: '#8B5CF6', secondary: '#7C3AED' },
+            { name: 'E-commerce Frontend', tech: 'HTML/Tailwind/Alpine', primary: '#EC4899', secondary: '#DB2777' }
+        ];
+
+        function generateImage() {
+            const projectName = document.getElementById('projectName').value;
+            const technology = document.getElementById('technology').value;
+            const primaryColor = document.getElementById('primaryColor').value;
+            const secondaryColor = document.getElementById('secondaryColor').value;
+
+            // Clear canvas
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, primaryColor);
+            gradient.addColorStop(1, secondaryColor);
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Add overlay
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Add geometric shapes
+            drawGeometricShapes(primaryColor, secondaryColor);
+
+            // Add project name
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 32px Arial';
+            ctx.textAlign = 'center';
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+            ctx.shadowBlur = 10;
+            ctx.fillText(projectName, canvas.width / 2, canvas.height / 2 - 20);
+
+            // Add technology
+            ctx.font = '18px Arial';
+            ctx.fillText(technology, canvas.width / 2, canvas.height / 2 + 20);
+
+            // Remove shadow
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+
+            // Add decorative elements
+            drawCodeElements();
+        }
+
+        function drawGeometricShapes(primary, secondary) {
+            // Draw circles
+            for (let i = 0; i < 5; i++) {
+                ctx.beginPath();
+                ctx.arc(
+                    Math.random() * canvas.width,
+                    Math.random() * canvas.height,
+                    Math.random() * 50 + 20,
+                    0,
+                    2 * Math.PI
+                );
+                ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.2 + 0.1})`;
+                ctx.fill();
+            }
+
+            // Draw rectangles
+            for (let i = 0; i < 3; i++) {
+                ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.1 + 0.05})`;
+                ctx.fillRect(
+                    Math.random() * canvas.width,
+                    Math.random() * canvas.height,
+                    Math.random() * 100 + 50,
+                    Math.random() * 50 + 25
+                );
+            }
+        }
+
+        function drawCodeElements() {
+            // Draw code-like elements
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.font = '12px monospace';
+
+            const codeSnippets = [
+                '< />',
+                '{ }',
+                'function()',
+                'const app =',
+                'export default',
+                'npm install',
+                'git commit'
+            ];
+
+            for (let i = 0; i < 8; i++) {
+                const snippet = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+                ctx.fillText(
+                    snippet,
+                    Math.random() * (canvas.width - 100),
+                    Math.random() * (canvas.height - 50) + 25
+                );
+            }
+        }
+
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = `project-${Date.now()}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+            showToast('Imagen descargada correctamente');
+        }
+
+        function generateAllProjectImages() {
+            projects.forEach((project, index) => {
+                setTimeout(() => {
+                    document.getElementById('projectName').value = project.name;
+                    document.getElementById('primaryColor').value = project.primary;
+                    document.getElementById('secondaryColor').value = project.secondary;
+
+                    generateImage();
+
+                    setTimeout(() => {
+                        const link = document.createElement('a');
+                        link.download = `project${index + 1}.jpg`;
+                        link.href = canvas.toDataURL('image/jpeg', 0.9);
+                        link.click();
+                        showToast(`Imagen ${index + 1} descargada correctamente`);
+                    }, 500);
+                }, index * 1000);
+            });
+        }
+
+        // Generate initial image
+        // Validación de correo electrónico personalizada para ejemplo
+        const emailInput = document.getElementById('projectName');
+        if (emailInput && emailInput.type === 'email') {
+            emailInput.addEventListener('invalid', function (e) {
+                e.preventDefault();
+                showToast('Por favor, ingresa un correo electrónico válido. Ejemplo: usuario@dominio.com');
+            });
+        }
+
+        generateImage();
+    </script>
+</body>
+
+</html>
